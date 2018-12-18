@@ -1,0 +1,8 @@
+# IntelliJ Idea files
+*.iml
+.idea/
+out/
+target/
+
+#Mac OS
+*.DS_Store
