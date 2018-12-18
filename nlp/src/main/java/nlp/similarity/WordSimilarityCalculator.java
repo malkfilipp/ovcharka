@@ -16,6 +16,7 @@ public class WordSimilarityCalculator implements SimilarityCalculator {
     }
 
     public double calcSimilarityScore(String word1, String word2) {
-        return calculator.calcRelatednessOfWords(word1, word2);
+        double score = calculator.calcRelatednessOfWords(word1, word2);
+        return (score == Double.MAX_VALUE) ? 1 : score;
     }
 }
