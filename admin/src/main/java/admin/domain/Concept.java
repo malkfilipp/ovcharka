@@ -39,15 +39,31 @@ public class Concept {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getWord() {
         return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public String getDefinition() {
         return definition;
     }
 
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
+
     public Integer getScore() {
         return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

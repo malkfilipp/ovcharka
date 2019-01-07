@@ -8,13 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
+//// TODO: 19/12/2018 Replace hardcoded strings with dynamic values
 @Repository
 public interface ConceptRepository extends Neo4jRepository<Concept, Long> {
-    Concept findByWord(@Param("word") String word);
-
-    @Query("match (n:Concept) return n")
-    Collection<Concept> getConceptList();
-
     @Query("match (n) detach delete n\n")
     void clear();
 
@@ -31,4 +27,19 @@ public interface ConceptRepository extends Neo4jRepository<Concept, Long> {
             "match (b:Concept { word: edges.target })\n" +
             "create (a)-[w:Weight{weight: toFloat(edges.weight)}]->(b)\n")
     void loadEdgesFromCsv();
+
+    @Query("create index on :Concept(word)\n")
+    void createIndexOnWord();
+
+    Concept findByWord(@Param("word") String name);
+
+    @Query("match (n:Concept) return n")
+    Collection<Concept> getAll();
+
+    @Query("match (a:Concept {word:{word}})-[e:Weight]->(n:Concept) \n" +
+            "with n, e.weight as w \n" +
+            "order by w desc\n" +
+            "limit 5\n" +
+            "return n")
+    Collection<Concept> getClosest(@Param("word") String word);
 }

@@ -25,13 +25,13 @@ public class AdminApplication implements CommandLineRunner {
     }
 
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(AdminApplication.class);
+        var app = new SpringApplication(AdminApplication.class);
         app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
     }
 
     @Override
     public void run(String... args) throws IOException {
-        conceptService.generateCsv();
+        conceptService.generate();
     }
 }

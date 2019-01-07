@@ -36,7 +36,7 @@ public class ConceptService {
         this.conceptRepository = conceptRepository;
     }
 
-    public void generateCsv() throws IOException {
+    public void generate() throws IOException {
         conceptRepository.clear();
 
         loadConceptsFromList();
@@ -51,6 +51,8 @@ public class ConceptService {
         var edgesFile = path + edgesFilename;
         Files.write(Paths.get(edgesFile), toCsv(edges).getBytes());
         conceptRepository.loadEdgesFromCsv();
+
+        conceptRepository.createIndexOnWord();
     }
 
     private void loadConceptsFromList() {

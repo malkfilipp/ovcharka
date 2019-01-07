@@ -1,30 +1,34 @@
 package user;
 
+import admin.domain.Concept;
+import admin.repository.ConceptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
-
-import org.springframework.boot.CommandLineRunner;
-import user.domain.Keyword;
-import user.repository.KeywordRepository;
-
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
-@EnableNeo4jRepositories("user.repository")
-public class OvcharkaApplication implements CommandLineRunner {
+@EntityScan("admin.domain")
+@ComponentScan("admin.repository")
+@EnableNeo4jRepositories("admin.repository")
+public class UserApplication implements CommandLineRunner {
 
     private Set<String> words;
 
-    private final KeywordRepository keywordRepository;
+    private final ConceptRepository conceptRepository;
 
     @Autowired
-    public OvcharkaApplication(KeywordRepository keywordRepository) {
-        this.keywordRepository = keywordRepository;
+    public UserApplication(ConceptRepository conceptRepository) {
+        this.conceptRepository = conceptRepository;
     }
 
     private static Random rand = new Random(System.nanoTime());
@@ -37,14 +41,15 @@ public class OvcharkaApplication implements CommandLineRunner {
     }
 
     private void loadGraph() {
-        words = keywordRepository.graph()
+        words = conceptRepository.getAll()
                                  .stream()
-                                 .map(Keyword::getWord)
+                                 .map(Concept::getWord)
                                  .collect(Collectors.toSet());
+//        System.out.println("words = " + words);
     }
 
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(OvcharkaApplication.class);
+        var app = new SpringApplication(UserApplication.class);
         app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
     }
@@ -63,9 +68,9 @@ public class OvcharkaApplication implements CommandLineRunner {
             askAndCheck(word);
 
             while (debt < 0 && words.size() > 0) {
-                word = keywordRepository.getClosest(word)
+                word = conceptRepository.getClosest(word)
                                         .stream()
-                                        .map(Keyword::getWord)
+                                        .map(Concept::getWord)
                                         .filter(words::contains)
                                         .findFirst().orElse(null);
 
@@ -80,7 +85,7 @@ public class OvcharkaApplication implements CommandLineRunner {
     private void askAndCheck(String word) {
         words.remove(word);
         System.out.println("Question: " + word);
-        var keyword = keywordRepository.findByWord(word);
+        var keyword = conceptRepository.findByWord(word);
 
         System.out.println("Enter answer: ");
         var userAnswer = scanner.nextLine();
