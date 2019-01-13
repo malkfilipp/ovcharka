@@ -10,8 +10,11 @@ public class SentenceSimilarityCalculator implements SimilarityCalculator {
     private WordSimilarityCalculator wordSimilarityCalculator = new WordSimilarityCalculator();
 
     public double calcSimilarityScore(String sentence1, String sentence2) {
-        var terms1 = lemmatizer.lemmatize(sentence1);
-        var terms2 = lemmatizer.lemmatize(sentence2);
+        var terms1 = new HashSet<>(lemmatizer.lemmatize(sentence1));
+        var terms2 = new HashSet<>(lemmatizer.lemmatize(sentence2));
+
+        System.out.println("terms1 = " + terms1);
+        System.out.println("terms2 = " + terms2);
 
         var union = getUnion(terms1, terms2);
 
@@ -21,14 +24,14 @@ public class SentenceSimilarityCalculator implements SimilarityCalculator {
         return getCos(vector1, vector2);
     }
 
-    private static HashSet<String> getUnion(List<String> terms1, List<String> terms2) {
+    private static HashSet<String> getUnion(Set<String> terms1, Set<String> terms2) {
         var union = new HashSet<String>();
         union.addAll(terms1);
         union.addAll(terms2);
         return union;
     }
 
-    private List<Double> getSemanticVector(Set<String> union, List<String> terms) {
+    private List<Double> getSemanticVector(Set<String> union, Set<String> terms) {
         return union.stream()
                     .map(i -> terms.stream()
                                    .map(j -> wordSimilarityCalculator.calcSimilarityScore(i, j))
