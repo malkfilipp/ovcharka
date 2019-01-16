@@ -1,14 +1,12 @@
 package ovcharka.conceptservice.service;
 
-import nlp.disambiguation.Classifier;
-import nlp.similarity.SimilarityCalculator;
-import nlp.similarity.WordSimilarityCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ovcharka.conceptservice.domain.Concept;
-import ovcharka.conceptservice.payload.ConceptsUpdateRequest;
-import ovcharka.conceptservice.payload.WordUpdateRequest;
 import ovcharka.conceptservice.repository.ConceptRepository;
+import ovcharka.nlp.disambiguation.Classifier;
+import ovcharka.nlp.similarity.SimilarityCalculator;
+import ovcharka.nlp.similarity.WordSimilarityCalculator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,21 +44,18 @@ public class ConceptService {
         return conceptRepository.findAll().map(Concept::getWord);
     }
 
-    public Flux<String> findRelated(String word) {
-        return conceptRepository
-                .findByWord(word)
-                .map(Concept::getRelated)
-                .flatMapMany(Flux::fromIterable);
+    public Mono<List<String>> findRelated(String word) {
+        return conceptRepository.findByWord(word)
+                                .map(Concept::getRelated);
     }
 
-    // TODO: 13/01/2019 add success indicator
-    public void updateConcepts(List<String> words) {
-        conceptRepository
+    public Flux<Concept> updateConcepts(List<String> words) {
+        return conceptRepository
                 .deleteAll()
                 .thenMany(
                         Flux.fromIterable(getConceptsFrom(words))
                             .flatMap(conceptRepository::save)
-                ).subscribe();
+                );
     }
 
     private List<Concept> getConceptsFrom(List<String> words) {
@@ -96,8 +91,8 @@ public class ConceptService {
         return concepts;
     }
 
-    public void updateConcept(Concept concept) {
-        conceptRepository
+    public Mono<Concept> updateConcept(Concept concept) {
+        return conceptRepository
                 .findByWord(concept.getWord())
                 .map(updated -> {
                     updated.setDefinition(concept.getDefinition());
@@ -110,9 +105,10 @@ public class ConceptService {
                                 .map(list -> {
                                     list.add(concept.getWord());
                                     return list;
-                                }).doOnNext(this::updateConcepts)
-                                .then(Mono.empty()))
-                ).subscribe();
+                                }).flatMapMany(this::updateConcepts)
+                                .collectList()
+                                .flatMap(list -> findByWord(concept.getWord())))
+                );
 
     }
 }

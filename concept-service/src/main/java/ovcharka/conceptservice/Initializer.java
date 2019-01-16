@@ -26,6 +26,7 @@ public class Initializer {
                         "algorithm", "database", "transaction", "tree", "boolean", "bug", "C", "Java",
                         "compiler", "translator", "concurrency", "code", "map", "stack", "set", "heap",
                         "computer", "interface", "core", "Linux", "instruction", "multiprocessing",
-                        "source code", "recursion", "register", "operating system", "computing", "cipher"));
+                        "source code", "recursion", "register", "operating system", "computing", "cipher")
+        ).subscribe();
     }
 }

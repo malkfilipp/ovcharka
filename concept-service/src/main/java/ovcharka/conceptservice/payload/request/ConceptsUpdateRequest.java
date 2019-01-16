@@ -1,4 +1,4 @@
-package ovcharka.conceptservice.payload;
+package ovcharka.conceptservice.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
