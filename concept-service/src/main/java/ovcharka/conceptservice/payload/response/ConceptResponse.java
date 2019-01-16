@@ -8,7 +8,7 @@ import ovcharka.conceptservice.domain.Concept;
 @Data
 public class ConceptResponse extends AbstractResponse<Concept> {
 
-    public ConceptResponse(String status, Concept concept, String message) {
-        super(status, concept, message);
+    public ConceptResponse(Concept concept) {
+        super(AbstractResponse.SUCCESS, concept, null);
     }
 }

@@ -39,12 +39,12 @@ public class ConceptHandler {
                               .timeout(TIMEOUT, getErrorResponse(status(INTERNAL_SERVER_ERROR), TIMEOUT_MESSAGE));
     }
 
-    private Mono<ServerResponse> getErrorResponse(BodyBuilder status, String timeoutMessage) {
-        return status.body(fromObject(new ErrorResponse(timeoutMessage)));
+    private Mono<ServerResponse> getErrorResponse(BodyBuilder status, String errorMessage) {
+        return status.body(fromObject(new ErrorResponse(errorMessage)));
     }
 
-    private <T> Mono<ServerResponse> getSuccessResponse(Mono<T> response, Class<T> tClass) {
-        return ok().body(response, tClass);
+    private <T> Mono<ServerResponse> getSuccessResponse(Mono<T> response, Class<T> responseClass) {
+        return ok().body(response, responseClass);
     }
 
     Mono<ServerResponse> findOneOrAll(ServerRequest request) {
@@ -53,14 +53,14 @@ public class ConceptHandler {
                 .map(word -> {
                     var response = conceptService
                             .findByWord(word)
-                            .map(concept -> new ConceptResponse(SUCCESS, concept, null));
+                            .map(ConceptResponse::new);
                     return getServerResponse(response, ConceptResponse.class, badRequest(), "No such word");
                 })
                 .orElseGet(() -> {
                                var response = conceptService
                                        .findAll()
                                        .collectList()
-                                       .map(list -> new ConceptListResponse(SUCCESS, list, null));
+                                       .map(ConceptListResponse::new);
                                return getServerResponse(response, ConceptListResponse.class);
                            }
                 );
@@ -70,7 +70,7 @@ public class ConceptHandler {
         var response = conceptService
                 .findAllWords()
                 .collectList()
-                .map(list -> new WordListResponse(SUCCESS, list, null));
+                .map(WordListResponse::new);
         return getServerResponse(response, WordListResponse.class);
     }
 
@@ -79,7 +79,7 @@ public class ConceptHandler {
                       .map(word -> {
                           var response = conceptService
                                   .findRelated(word)
-                                  .map(list -> new WordListResponse(SUCCESS, list, null));
+                                  .map(WordListResponse::new);
                           return getServerResponse(response, WordListResponse.class, badRequest(), "No such word");
                       }).orElse(getErrorResponse(badRequest(), "Word parameter is required"));
     }

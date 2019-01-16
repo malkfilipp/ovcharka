@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class ConceptListResponse extends AbstractResponse<List<Concept>> {
 
-    public ConceptListResponse(String status, List<Concept> concepts, String message) {
-        super(status, concepts, message);
+    public ConceptListResponse(List<Concept> concepts) {
+        super(AbstractResponse.SUCCESS, concepts, null);
     }
 }

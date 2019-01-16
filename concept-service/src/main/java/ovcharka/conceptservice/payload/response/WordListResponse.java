@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class WordListResponse extends AbstractResponse<List<String>> {
 
-    public WordListResponse(String status, List<String> words, String message) {
-        super(status, words, message);
+    public WordListResponse(List<String> words) {
+        super(AbstractResponse.SUCCESS, words, null);
     }
 }
