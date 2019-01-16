@@ -59,7 +59,6 @@ public class ConceptHandler {
                 .orElseGet(() -> {
                                var response = conceptService
                                        .findAll()
-                                       .collectList()
                                        .map(ConceptListResponse::new);
                                return getServerResponse(response, ConceptListResponse.class);
                            }
@@ -69,7 +68,6 @@ public class ConceptHandler {
     Mono<ServerResponse> findAllWords(ServerRequest request) {
         var response = conceptService
                 .findAllWords()
-                .collectList()
                 .map(WordListResponse::new);
         return getServerResponse(response, WordListResponse.class);
     }
@@ -90,7 +88,6 @@ public class ConceptHandler {
                       .flatMap(words -> {
                           var response = conceptService
                                   .updateConcepts(words)
-                                  .collectList()
                                   .map(it -> new SuccessResponse());
                           return getServerResponse(response, SuccessResponse.class);
                       });

@@ -32,16 +32,18 @@ public class ConceptService {
         this.conceptRepository = conceptRepository;
     }
 
-    public Flux<Concept> findAll() {
-        return conceptRepository.findAll();
+    public Mono<List<Concept>> findAll() {
+        return conceptRepository.findAll().collectList();
     }
 
     public Mono<Concept> findByWord(String word) {
         return conceptRepository.findByWord(word);
     }
 
-    public Flux<String> findAllWords() {
-        return conceptRepository.findAll().map(Concept::getWord);
+    public Mono<List<String>> findAllWords() {
+        return conceptRepository.findAll()
+                                .map(Concept::getWord)
+                                .collectList();
     }
 
     public Mono<List<String>> findRelated(String word) {
@@ -49,13 +51,13 @@ public class ConceptService {
                                 .map(Concept::getRelated);
     }
 
-    public Flux<Concept> updateConcepts(List<String> words) {
+    public Mono<List<Concept>> updateConcepts(List<String> words) {
         return conceptRepository
                 .deleteAll()
                 .thenMany(
                         Flux.fromIterable(getConceptsFrom(words))
                             .flatMap(conceptRepository::save)
-                );
+                ).collectList();
     }
 
     private List<Concept> getConceptsFrom(List<String> words) {
@@ -101,12 +103,10 @@ public class ConceptService {
                 }).flatMap(conceptRepository::save)
                 .switchIfEmpty(
                         Mono.defer(() -> findAllWords()
-                                .collectList()
                                 .map(list -> {
                                     list.add(concept.getWord());
                                     return list;
-                                }).flatMapMany(this::updateConcepts)
-                                .collectList()
+                                }).flatMap(this::updateConcepts)
                                 .flatMap(list -> findByWord(concept.getWord())))
                 );
 
