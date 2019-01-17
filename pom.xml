@@ -19,5 +19,6 @@
 		<module>user</module>
 		<module>nlp</module>
 		<module>concept-service</module>
+		<module>user-service</module>
 	</modules>
 </project>
