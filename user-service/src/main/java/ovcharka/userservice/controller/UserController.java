@@ -1,0 +1,58 @@
+package ovcharka.userservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ovcharka.common.web.AbstractController;
+import ovcharka.common.web.AbstractResponse;
+import ovcharka.common.web.BooleanResponse;
+import ovcharka.userservice.domain.User;
+import ovcharka.userservice.payload.request.UserStatsUpdateRequest;
+import ovcharka.userservice.payload.request.UserUpdateRequest;
+import ovcharka.userservice.payload.response.UserResponse;
+import ovcharka.userservice.service.UserService;
+
+@RestController
+@RequestMapping("/users")
+public class UserController extends AbstractController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    ResponseEntity<AbstractResponse> getUser(@RequestParam String username) {
+        return getResponse(
+                () -> new UserResponse(
+                        userService.findByUsername(username)
+                )
+        );
+    }
+
+    @PostMapping
+    ResponseEntity<AbstractResponse> updateUser(@RequestBody UserUpdateRequest request) {
+        return getResponse(
+                () -> {
+                    userService.updateByUsername(
+                            User.with(request.getName(),
+                                      request.getUsername(),
+                                      request.getPassword())
+                    );
+                    return new BooleanResponse(true);
+                }
+        );
+    }
+
+    @PostMapping("/stats")
+    ResponseEntity<AbstractResponse> updateUserStats(@RequestBody UserStatsUpdateRequest request) {
+        return getResponse(
+                () -> {
+                    userService.updateUserStats(request.getUsername(), request.getGrade());
+                    return new BooleanResponse(true);
+                }
+        );
+    }
+}

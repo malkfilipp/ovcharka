@@ -9,6 +9,4 @@ public class ConceptServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConceptServiceApplication.class, args);
     }
-
 }
-

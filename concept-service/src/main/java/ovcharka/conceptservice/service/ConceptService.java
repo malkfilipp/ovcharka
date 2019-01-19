@@ -7,8 +7,6 @@ import ovcharka.conceptservice.repository.ConceptRepository;
 import ovcharka.nlp.disambiguation.Classifier;
 import ovcharka.nlp.similarity.SimilarityCalculator;
 import ovcharka.nlp.similarity.WordSimilarityCalculator;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,32 +30,40 @@ public class ConceptService {
         this.conceptRepository = conceptRepository;
     }
 
-    public Mono<List<Concept>> findAll() {
-        return conceptRepository.findAll().collectList();
+    public List<Concept> findAll() {
+        return conceptRepository.findAll();
     }
 
-    public Mono<Concept> findByWord(String word) {
-        return conceptRepository.findByWord(word);
+    public Concept findByWord(String word) {
+        var concept = conceptRepository.findByWord(word);
+
+        if (concept.isPresent())
+            return concept.get();
+        else
+            throw new IllegalArgumentException("No such word");
     }
 
-    public Mono<List<String>> findAllWords() {
-        return conceptRepository.findAll()
-                                .map(Concept::getWord)
-                                .collectList();
-    }
-
-    public Mono<List<String>> findRelated(String word) {
-        return conceptRepository.findByWord(word)
-                                .map(Concept::getRelated);
-    }
-
-    public Mono<List<Concept>> updateConcepts(List<String> words) {
+    public List<String> findAllWords() {
         return conceptRepository
-                .deleteAll()
-                .thenMany(
-                        Flux.fromIterable(getConceptsFrom(words))
-                            .flatMap(conceptRepository::save)
-                ).collectList();
+                .findAll()
+                .stream()
+                .map(Concept::getWord)
+                .collect(toList());
+    }
+
+    public List<String> findRelated(String word) {
+        var concept = conceptRepository.findByWord(word);
+
+        if (concept.isPresent())
+            return concept.get().getRelated();
+        else
+            throw new IllegalArgumentException("No such word");
+    }
+
+    public void updateConcepts(List<String> words) {
+        conceptRepository.deleteAll();
+        var concepts = getConceptsFrom(words);
+        conceptRepository.saveAll(concepts);
     }
 
     private List<Concept> getConceptsFrom(List<String> words) {
@@ -66,8 +72,8 @@ public class ConceptService {
                 .map(word -> new Concept(null, word,
                                          classifier.getDefinition(word),
                                          classifier.getSignificance(word),
-                                         new ArrayList<>()))
-                .collect(toList());
+                                         new ArrayList<>())
+                ).collect(toList());
 
         var map = new HashMap<String, Double>();
         concepts.forEach(
@@ -93,22 +99,19 @@ public class ConceptService {
         return concepts;
     }
 
-    public Mono<Concept> updateConcept(Concept concept) {
-        return conceptRepository
-                .findByWord(concept.getWord())
-                .map(updated -> {
-                    updated.setDefinition(concept.getDefinition());
-                    updated.setScore(concept.getScore());
-                    return updated;
-                }).flatMap(conceptRepository::save)
-                .switchIfEmpty(
-                        Mono.defer(() -> findAllWords()
-                                .map(list -> {
-                                    list.add(concept.getWord());
-                                    return list;
-                                }).flatMap(this::updateConcepts)
-                                .flatMap(list -> findByWord(concept.getWord())))
-                );
+    public void updateConcept(Concept concept) {
+        var found = conceptRepository
+                .findByWord(concept.getWord());
 
+        if (found.isPresent()) {
+            var updated = found.get();
+            updated.setDefinition(concept.getDefinition());
+            updated.setScore(concept.getScore());
+            conceptRepository.save(updated);
+        } else {
+            var words = findAllWords();
+            words.add(concept.getWord());
+            updateConcepts(words);
+        }
     }
 }

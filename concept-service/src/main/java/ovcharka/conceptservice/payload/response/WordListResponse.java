@@ -1,15 +1,18 @@
 package ovcharka.conceptservice.payload.response;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import ovcharka.common.web.AbstractResponse;
 
 import java.util.List;
 
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Data
+@ToString(callSuper = true)
 public class WordListResponse extends AbstractResponse<List<String>> {
 
     public WordListResponse(List<String> words) {
-        super(AbstractResponse.SUCCESS, words, null);
+        super(SUCCESS, words, null);
     }
 }

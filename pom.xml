@@ -1,24 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>ovcharka</groupId>
-	<artifactId>ovcharka</artifactId>
-	<version>1.0</version>
-	<packaging>pom</packaging>
-	<name>user</name>
+    <groupId>ovcharka</groupId>
+    <artifactId>ovcharka</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.2.RELEASE</version>
-	</parent>
+    <name>ovcharka</name>
 
-	<modules>
-		<module>admin</module>
-		<module>user</module>
-		<module>nlp</module>
-		<module>concept-service</module>
-		<module>user-service</module>
-	</modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.2.RELEASE</version>
+    </parent>
+
+    <modules>
+        <module>nlp</module>
+        <module>common</module>
+        <module>concept-service</module>
+        <module>user-service</module>
+        <module>training-service</module>
+    </modules>
 </project>

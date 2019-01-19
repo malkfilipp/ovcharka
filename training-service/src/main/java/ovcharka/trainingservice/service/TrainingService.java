@@ -6,8 +6,10 @@ import ovcharka.conceptservice.domain.Concept;
 import ovcharka.nlp.similarity.SentenceSimilarityCalculator;
 import ovcharka.trainingservice.domain.Training;
 import ovcharka.trainingservice.repository.TrainingRepository;
+import ovcharka.userservice.domain.Grade;
 
 import java.security.SecureRandom;
+import java.util.Optional;
 
 import static java.lang.Math.max;
 
@@ -44,10 +46,6 @@ public class TrainingService {
 
     private String getOnStartResponse(String username) {
         var userId = trainingClient.getUserIdByUsername(username);
-
-        if (userId == null)
-            throw new IllegalArgumentException("No such user");
-
         var training = trainingRepository.findByUserId(userId);
 
         if (training.isPresent()) {
@@ -55,23 +53,20 @@ public class TrainingService {
         } else {
             var newTraining = Training.of(userId);
             newTraining.setWords(trainingClient.getAllWords());
+            var word = getRandomWord(newTraining);
             trainingRepository.save(newTraining);
-            return getRandomWord(username);
+            return word;
         }
     }
 
     private Training getTraining(String username) {
         var userId = trainingClient.getUserIdByUsername(username);
-
-        if (userId == null)
-            throw new IllegalArgumentException("No such user");
-
         var training = trainingRepository.findByUserId(userId);
 
-        if (training.isPresent())
-            return training.get();
-        else
-            throw new IllegalStateException("No current trainings for user with username: " + username);
+        if (!training.isPresent())
+            throw new IllegalArgumentException("No current trainings for user with username: " + username);
+
+        return training.get();
     }
 
     private String getOnEndResponse(String username) {
@@ -91,16 +86,10 @@ public class TrainingService {
 
         reevaluate(answer, concept, training);
 
-        var words = training.getWords();
-
-        if (training.getQuestionsLeft() > 0 && !words.isEmpty()) {
-
-            if (training.getDebt() > 0) {
-                var word = getRelatedWordIfAvailable(concept, training);
-                if (word != null)
-                    return word;
-            }
-            return getRandomWord(username);
+        var word = getNextWord(concept, training);
+        if (word.isPresent()) {
+            trainingRepository.save(training);
+            return word.get();
         }
 
         var grade = getFinalGrade(training.getScore(), training.getMax());
@@ -109,25 +98,34 @@ public class TrainingService {
         return grade;
     }
 
-    private String getRandomWord(String username) {
-        var training = getTraining(username);
+    private Optional<String> getNextWord(Concept concept, Training training) {
+        var words = training.getWords();
+
+        if (training.getQuestionsLeft() > 0 && !words.isEmpty()) {
+            if (training.getDebt() > 0) {
+                var word = getRelatedWordIfAvailable(concept, training);
+                if (word.isPresent()) return word;
+            }
+            return Optional.of(getRandomWord(training));
+        }
+        return Optional.empty();
+    }
+
+    private String getRandomWord(Training training) {
         var words = training.getWords();
 
         if (words.isEmpty())
-            throw new IllegalStateException("No words left");
+            throw new IllegalArgumentException("No words left");
 
         var index = rand.nextInt(words.size());
         var word = words.get(index);
         words.remove(index);
         training.setCurWord(word);
         training.setQuestionsLeft(training.getQuestionsLeft() - 1);
-        trainingRepository.save(training);
-
         return word;
     }
 
-
-    private String getRelatedWordIfAvailable(Concept concept, Training training) {
+    private Optional<String> getRelatedWordIfAvailable(Concept concept, Training training) {
         var words = training.getWords();
 
         var relatedWord = concept
@@ -136,15 +134,14 @@ public class TrainingService {
                 .filter(words::contains)
                 .findFirst();
 
-        if (relatedWord.isPresent()) {
-            var word = relatedWord.get();
-            words.remove(word);
-            training.setCurWord(word);
-            training.setQuestionsLeft(training.getQuestionsLeft() - 1);
-            trainingRepository.save(training);
-            return word;
-        }
-        return null;
+        if (!relatedWord.isPresent())
+            return Optional.empty();
+
+        var word = relatedWord.get();
+        words.remove(word);
+        training.setCurWord(word);
+        training.setQuestionsLeft(training.getQuestionsLeft() - 1);
+        return relatedWord;
     }
 
     private void reevaluate(String answer, Concept concept, Training training) {
@@ -162,17 +159,21 @@ public class TrainingService {
     }
 
     private String getFinalGrade(int score, int max) {
-        var grade = (double) score / max;
-        if (grade >= 0.9) {
-            return "A";
-        } else if (grade >= 0.8) {
-            return "B";
-        } else if (grade >= 0.7) {
-            return "C";
-        } else if (grade >= 0.6) {
-            return "D";
+        var res = (double) score / max;
+        Grade grade;
+
+        if (res >= 0.9) {
+            grade = Grade.A;
+        } else if (res >= 0.8) {
+            grade = Grade.B;
+        } else if (res >= 0.7) {
+            grade = Grade.C;
+        } else if (res >= 0.6) {
+            grade = Grade.D;
         } else {
-            return "F";
+            grade = Grade.F;
         }
+
+        return grade.getSymbol();
     }
 }

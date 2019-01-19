@@ -1,14 +1,17 @@
 package ovcharka.userservice.payload.response;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import ovcharka.common.web.AbstractResponse;
 import ovcharka.userservice.domain.User;
 
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Data
+@ToString(callSuper = true)
 public class UserResponse extends AbstractResponse<User> {
 
-    public UserResponse(User concept) {
-        super(AbstractResponse.SUCCESS, concept, null);
+    public UserResponse(User user) {
+        super(AbstractResponse.SUCCESS, user, null);
     }
 }

@@ -4,7 +4,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>nlp</artifactId>
-    <version>1.0</version>
     <packaging>jar</packaging>
     <name>nlp</name>
 

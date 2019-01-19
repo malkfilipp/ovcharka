@@ -9,15 +9,25 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>concept-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+
 	<name>concept-service</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Concept Service for Ovcharka</description>
 
 	<properties>
 		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
+        <dependency>
+            <groupId>ovcharka</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ovcharka</groupId>
+            <artifactId>nlp</artifactId>
+            <version>1.0</version>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
@@ -41,12 +51,7 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>ovcharka</groupId>
-			<artifactId>nlp</artifactId>
-			<version>1.0</version>
-		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

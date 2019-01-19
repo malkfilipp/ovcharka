@@ -2,12 +2,9 @@ package ovcharka.userservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ovcharka.userservice.domain.Stats;
+import ovcharka.userservice.domain.Grade;
 import ovcharka.userservice.domain.User;
 import ovcharka.userservice.repository.UserRepository;
-import reactor.core.publisher.Mono;
-
-import static reactor.core.publisher.Mono.*;
 
 @Service
 public class UserService {
@@ -19,22 +16,64 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Mono<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUsername(String username) {
+        var user = userRepository.findByUsername(username);
+
+        if (!user.isPresent())
+            throw new IllegalArgumentException("No such user");
+
+        return user.get();
     }
 
-    public Mono<Void> deleteAll() {
-        return userRepository.deleteAll();
+    public void deleteAll() {
+        userRepository.deleteAll();
     }
 
-    public Mono<User> updateByUsername(User user) {
-        return userRepository
-                .findByUsername(user.getUsername())
-                .map(updated -> {
-                    updated.setName(user.getName());
-                    updated.setPassword(user.getPassword());
-                    return updated;
-                }).switchIfEmpty(just(user))
-                .flatMap(userRepository::save);
+    public void updateByUsername(User user) {
+        var found = userRepository.findByUsername(user.getUsername());
+
+        User saved;
+        if (found.isPresent()) {
+            saved = found.get();
+            saved.setName(user.getName());
+            saved.setPassword(user.getPassword());
+        } else {
+            saved = user;
+        }
+
+        userRepository.save(saved);
+    }
+
+    public void updateUserStats(String username, String grade) {
+        var found = userRepository.findByUsername(username);
+
+        if (!found.isPresent())
+            throw new IllegalArgumentException("No such user");
+
+        Double gradeValue;
+
+        try {
+            gradeValue = Grade.valueOf(grade).getValue();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("No such grade: " + grade);
+        }
+
+        var user = found.get();
+        var stats = user.getStats();
+
+        var totalTrainings = stats.getTotalTrainings();
+        totalTrainings++;
+
+        var curGpa = stats.getGpa();
+        stats.setGpa(
+                curGpa + (gradeValue - curGpa) / totalTrainings
+        );
+
+        stats.setTotalTrainings(totalTrainings);
+
+        if (!grade.equals(Grade.F.getSymbol()))
+            stats.setPassed(stats.getPassed() + 1);
+
+        userRepository.save(user);
     }
 }

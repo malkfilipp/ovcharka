@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public
-class Stats {
+public class Stats {
 
-    private Integer totalTrainings;
-    private Integer passed;
-    private String gpa;
+    private Integer totalTrainings = 0;
+    private Integer passed = 0;
+    private Double gpa = Grade.F.getValue();
 }

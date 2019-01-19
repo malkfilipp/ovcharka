@@ -27,6 +27,6 @@ public class Initializer {
                         "compiler", "translator", "concurrency", "code", "map", "stack", "set", "heap",
                         "computer", "interface", "core", "Linux", "instruction", "multiprocessing",
                         "source code", "recursion", "register", "operating system", "computing", "cipher")
-        ).subscribe();
+        );
     }
 }

@@ -1,14 +1,17 @@
 package ovcharka.conceptservice.payload.response;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import ovcharka.common.web.AbstractResponse;
 import ovcharka.conceptservice.domain.Concept;
 
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Data
+@ToString(callSuper = true)
 public class ConceptResponse extends AbstractResponse<Concept> {
 
     public ConceptResponse(Concept concept) {
-        super(AbstractResponse.SUCCESS, concept, null);
+        super(SUCCESS, concept, null);
     }
 }
