@@ -1,0 +1,16 @@
+translator:translator
+A software program that transforms high-level source code that is written by a developer in a high-level programming language into a low level object code (binary code) in machine language, which can be understood by the processor.
+A computer program that transforms computer code written in one programming language (the source language) into another programming language (the target language).
+
+map:map
+An abstract data that stores data in the form of key and value pairs where every key is unique.
+An abstract data type composed of a collection of (key, value) pairs, such that each possible key appears at most once in the collection.
+
+bookExample1:bookExample2
+Consumers would still have to get a descrambling security card from their cable operator to plug into the set.
+To watch pay television, consumers would insert into the set a security card provided by their cable service.
+
+cLanguage:cLanguage
+A general-purpose, imperative computer programming language, supporting structured programming, lexical variable scope and recursion, while a static type system prevents many unintended operations.
+A general-purpose programming language, supporting structured programming, with a static type system that prevents many unintended operations.
+

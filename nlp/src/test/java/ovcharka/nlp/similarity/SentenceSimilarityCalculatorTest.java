@@ -1,35 +1,73 @@
 package ovcharka.nlp.similarity;
 
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+import static org.junit.Assert.assertEquals;
+
 public class SentenceSimilarityCalculatorTest {
-    public static void main(String[] args) {
-//                var sentence1 = "Consumers would still have to get a descrambling security card from their cable operator to plug into the set.";
-//        var sentence1 = "a food that is eaten routinely and in such quantities that it constitutes a dominant portion" +
-//                " of a standard diet for a given people  supplying a large fraction of energy needs";
-        var sentence1 = "A software program that transforms high-level source code that is written by a developer in " +
-                "a high-level programming language into a low level object code (binary code) in machine language, which can be understood by the processor. ";
-//        var sentence2 = "To watch pay television, consumers would insert into the set a security card provided by their cable service.";
-        var sentence2 = "A computer program that transforms computer code written in one programming language (the " +
-                "source language) into another programming language (the target language).";
-//
-//        var sentence1 = "a general-purpose computer-programming language that is concurrent, class-based, " +
-//                "object-oriented, and specifically designed to have as few implementation dependencies as possible.";
-//        var sentence2 = "is a high-level, interpreted programming language that conforms to the ECMAScript specification. It is a language that is also characterized as dynamic, weakly typed, prototype-based and multi-paradigm.";
-//        var sentence1 = "A general-purpose, imperative computer programming language, supporting structured programming, lexical variable scope and recursion, while a static type system prevents many unintended operations.";
-//        var sentence2 = "A general-purpose programming language, supporting structured programming, with a static " +
-//                "type system that prevents many unintended operations.";
-//        var sentence1 = "A group of expectations that shape experience by making people especially sensitive to " +
-//                "specific kinds of information";
-//        var sentence2 = "An abstract data type that can store unique values, without any particular order.\n" +
-//                "It is a computer implementation of the mathematical concept of a finite set.";
-//        var sentence1 = "An abstract data that stores data in the form of key and value pairs where every key is " +
-//                "unique.";
-//        var sentence2 = "An abstract data type composed of a collection of (key, value) pairs, such that each possible key appears at most once in the collection.";
+
+    private Logger logger = LoggerFactory.getLogger(SentenceSimilarityCalculatorTest.class);
+
+    @Test
+    public void sentencesShouldBeSimilar() {
+        checkSentences("src/test/resources/similar.txt", true);
+    }
+
+    @Test
+    public void sentencesShouldNotBeSimilar() {
+        checkSentences("src/test/resources/not-similar.txt", false);
+    }
+
+    private void checkSentences(String filename, boolean shouldBeSimilar) {
+        var file = new File((filename));
 
         var calculator = new SentenceSimilarityCalculator();
+        try (Scanner scanner = new Scanner(file)) {
 
-        var start = System.nanoTime();
-        System.out.println(calculator.calcSimilarityScore(sentence1, sentence2));
+            while (true) {
+                String words;
+                String first;
+                String second;
 
-        System.out.println((System.nanoTime() - start) / 1e6);
+                if (!scanner.hasNextLine()) break;
+
+                words = scanner.nextLine();
+                logger.info("Comparing words " + words);
+
+                if (!scanner.hasNextLine()) {
+                    logger.error("No definition provided for the first word");
+                    break;
+                }
+                first = scanner.nextLine();
+
+                if (!scanner.hasNextLine()) {
+                    logger.error("No definition provided for the second word");
+                    break;
+                }
+                second = scanner.nextLine();
+
+                var areSimilar = calculator.areSimilar(first, second);
+
+                if (areSimilar != shouldBeSimilar) {
+                    if (shouldBeSimilar)
+                        logger.error("Words should be similar while they are not");
+                    else
+                        logger.error("Words should not be similar while they are");
+                }
+
+                assertEquals(areSimilar, shouldBeSimilar);
+
+                if (!scanner.hasNextLine()) break;
+                scanner.nextLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

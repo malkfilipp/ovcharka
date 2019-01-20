@@ -11,7 +11,7 @@ public class SentenceSimilarityCalculator implements SimilarityCalculator {
 
     @Override
     public boolean areSimilar(String first, String second) {
-//        return calcSimilarityScore(first, second) > 0.6;
+//        return calcSimilarityScore(first, second) > 0.8;
         return first.equals(second);
     }
 
@@ -19,9 +19,6 @@ public class SentenceSimilarityCalculator implements SimilarityCalculator {
     public double calcSimilarityScore(String sentence1, String sentence2) {
         var terms1 = new HashSet<>(lemmatizer.lemmatize(sentence1));
         var terms2 = new HashSet<>(lemmatizer.lemmatize(sentence2));
-
-        System.out.println("terms1 = " + terms1);
-        System.out.println("terms2 = " + terms2);
 
         var union = getUnion(terms1, terms2);
 

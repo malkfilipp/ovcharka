@@ -1,0 +1,39 @@
+rooster:voyage
+An adult male chicken.
+A long journey on a ship or in a spacecraft.
+
+noon:string
+12 o'clock in the middle of the day.
+Thin rope made of twisted threads, used for tying things together or tying up parcels.
+
+autograph:shore
+The signature of someone famous which is specially written for a fan to keep.
+The land along the edge of a sea, lake or wide river.
+
+glass:magician
+A hard transparent substance that is used to make things such as windows and bottles.
+A person who entertains people by doing magic tricks.
+
+boy:rooster
+A child who will grow up to be a man.
+An adult male chicken.
+
+cushion:jewel
+A fabric case filled with soft material, which you put on a seat to make it more comfortable.
+A precious stone used to decorate valuable things that you wear, such as rings or necklaces.
+
+fruit:furnace
+The seed-bearing structure in flowering plants formed from the ovary after flowering.
+A device used for high-temperature heating
+
+java:javascript
+A general-purpose computer-programming language that is concurrent, class-based, object-oriented, and specifically designed to have as few implementation dependencies as possible.
+A high-level, interpreted programming language that is also characterized as dynamic, weakly typed, prototype-based and multi-paradigm.
+
+set(psychology):set(structure)
+A group of expectations that shape experience by making people especially sensitive to specific information
+An abstract data type that can store unique values, without any particular order.
+
+stapleFood:set(structure)
+A food that is eaten routinely and in such quantities that it constitutes a dominant portion of a standard diet
+An abstract data type that can store unique values, without any particular order.

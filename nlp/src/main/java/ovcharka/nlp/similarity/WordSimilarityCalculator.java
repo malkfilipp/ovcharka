@@ -15,12 +15,13 @@ public class WordSimilarityCalculator implements SimilarityCalculator {
         WS4JConfiguration.getInstance().setMFS(false);
     }
 
+    public boolean areSimilar(String first, String second) {
+        return calcSimilarityScore(first, second) > 0.6;
+    }
+
+
     public double calcSimilarityScore(String word1, String word2) {
         double score = calculator.calcRelatednessOfWords(word1, word2);
         return (score == Double.MAX_VALUE) ? 1 : score;
-    }
-
-    public boolean areSimilar(String first, String second) {
-        return calcSimilarityScore(first, second) > 0.6;
     }
 }
