@@ -21,7 +21,7 @@ public class TrainingController extends AbstractController {
         this.trainingService = trainingService;
     }
 
-    @PostMapping("/sendMessage")
+    @PostMapping
     public ResponseEntity<AbstractResponse> sendMessage(@RequestBody MessageRequest messageRequest) {
         return getResponse(
                 () -> new MessageResponse(

@@ -19,6 +19,7 @@
     <modules>
         <module>common</module>
         <module>service-registry</module>
+        <module>gateway</module>
         <module>concept-service</module>
         <module>user-service</module>
         <module>training-service</module>
