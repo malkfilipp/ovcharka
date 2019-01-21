@@ -31,8 +31,9 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
             .and()
             .addFilterAfter(new TokenAuthenticationFilter(authConfig), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
-            .antMatchers(POST, authConfig.getUri()).permitAll()
-            .antMatchers("/admin/**").hasRole("ADMIN")
+            .antMatchers(POST, "/auth" + authConfig.getLoginUri()).permitAll()
+            .antMatchers(POST, "/auth" + authConfig.getSignupUri()).permitAll()
+            .antMatchers("/admin/**/**").hasRole("ADMIN")
             .anyRequest().authenticated();
     }
 }

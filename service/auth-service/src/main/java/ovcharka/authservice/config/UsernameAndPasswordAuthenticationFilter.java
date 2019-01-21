@@ -32,7 +32,7 @@ public class UsernameAndPasswordAuthenticationFilter extends UsernamePasswordAut
         this.authManager = authManager;
         this.authConfig = authConfig;
 
-        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(authConfig.getUri(), "POST"));
+        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(authConfig.getLoginUri(), "POST"));
     }
 
     @Override

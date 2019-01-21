@@ -9,8 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ovcharka.common.config.AuthConfig;
 
-import javax.servlet.http.HttpServletResponse;
-
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -36,11 +35,12 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(STATELESS)
             .and()
             .exceptionHandling()
-            .authenticationEntryPoint((req, resp, e) -> resp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+            .authenticationEntryPoint((req, resp, e) -> resp.sendError(SC_UNAUTHORIZED))
             .and()
             .addFilter(new UsernameAndPasswordAuthenticationFilter(authenticationManager(), authConfig))
             .authorizeRequests()
-            .antMatchers(POST, authConfig.getUri()).permitAll()
+            .antMatchers(POST, authConfig.getLoginUri()).permitAll()
+            .antMatchers(POST, authConfig.getSignupUri()).permitAll()
             .anyRequest().authenticated();
     }
 

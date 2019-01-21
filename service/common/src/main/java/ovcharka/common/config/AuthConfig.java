@@ -8,7 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 public class AuthConfig {
-    private String uri;
+    private String loginUri;
+    private String signupUri;
     private String header;
     private String prefix;
     private int expiration;

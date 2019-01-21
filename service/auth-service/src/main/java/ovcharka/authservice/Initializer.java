@@ -5,21 +5,21 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import ovcharka.authservice.service.UserDetailsServiceImpl;
+import ovcharka.authservice.service.AuthService;
 import ovcharka.userservice.domain.Role;
 import ovcharka.userservice.payload.request.UserUpdateRequest;
 
 @Configuration
 public class Initializer {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthService userDetailsService;
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public Initializer(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder) {
+    public Initializer(AuthService userDetailsService, BCryptPasswordEncoder encoder) {
         this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
+        this.encoder = encoder;
     }
 
 
@@ -27,13 +27,13 @@ public class Initializer {
     public void init(ApplicationReadyEvent event) {
         userDetailsService.updateUser(
                 new UserUpdateRequest("John", "john",
-                                      passwordEncoder.encode("password1"),
-                                      Role.USER.toString())
+                                      encoder.encode("password1"),
+                                      Role.ADMIN.toString())
         );
 
         userDetailsService.updateUser(
                 new UserUpdateRequest("Mary", "mary",
-                                      passwordEncoder.encode("password2"),
+                                      encoder.encode("password2"),
                                       Role.USER.toString())
         );
     }

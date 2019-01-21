@@ -14,10 +14,10 @@ import ovcharka.userservice.payload.request.UserUpdateRequest;
 import ovcharka.userservice.payload.response.UserResponse;
 
 @Service
-public class UserDetailsServiceImpl extends AbstractClient implements UserDetailsService {
+public class AuthService extends AbstractClient implements UserDetailsService {
 
     @Autowired
-    UserDetailsServiceImpl(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    AuthService(RestTemplate restTemplate, ObjectMapper objectMapper) {
         super(restTemplate, objectMapper);
     }
 

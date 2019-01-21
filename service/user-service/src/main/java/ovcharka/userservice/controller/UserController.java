@@ -37,10 +37,10 @@ public class UserController extends AbstractController {
         return getResponse(
                 () -> {
                     userService.updateByUsername(
-                            User.with(request.getName(),
-                                      request.getUsername(),
-                                      request.getPassword(),
-                                      Role.valueOf(request.getRole()))
+                            new User(request.getName(),
+                                     request.getUsername(),
+                                     request.getPassword(),
+                                     Role.valueOf(request.getRole()))
                     );
                     return new BooleanResponse(true);
                 }
