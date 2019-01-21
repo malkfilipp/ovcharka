@@ -17,9 +17,6 @@
 
     <modules>
         <module>nlp</module>
-        <module>common</module>
-        <module>concept-service</module>
-        <module>user-service</module>
-        <module>training-service</module>
+        <module>service</module>
     </modules>
 </project>
