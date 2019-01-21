@@ -1,6 +1,8 @@
-package ovcharka.common.web;
+package ovcharka.common.controller;
 
 import org.springframework.http.ResponseEntity;
+import ovcharka.common.payload.AbstractResponse;
+import ovcharka.common.payload.ErrorResponse;
 
 import java.util.function.Supplier;
 

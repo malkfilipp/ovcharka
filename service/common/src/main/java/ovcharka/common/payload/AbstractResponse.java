@@ -1,4 +1,4 @@
-package ovcharka.common.web;
+package ovcharka.common.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

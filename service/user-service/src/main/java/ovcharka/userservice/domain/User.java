@@ -20,5 +20,7 @@ public class User {
     private String username;
     @NonNull
     private String password;
+    @NonNull
+    private Role role;
     private Stats stats = new Stats();
 }

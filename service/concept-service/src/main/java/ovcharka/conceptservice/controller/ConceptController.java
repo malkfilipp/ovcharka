@@ -3,9 +3,9 @@ package ovcharka.conceptservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ovcharka.common.web.AbstractController;
-import ovcharka.common.web.AbstractResponse;
-import ovcharka.common.web.BooleanResponse;
+import ovcharka.common.controller.AbstractController;
+import ovcharka.common.payload.AbstractResponse;
+import ovcharka.common.payload.BooleanResponse;
 import ovcharka.conceptservice.domain.Concept;
 import ovcharka.conceptservice.payload.request.ConceptUpdateRequest;
 import ovcharka.conceptservice.payload.request.ConceptsUpdateRequest;
@@ -15,7 +15,6 @@ import ovcharka.conceptservice.payload.response.WordListResponse;
 import ovcharka.conceptservice.service.ConceptService;
 
 @RestController
-@RequestMapping("/concepts")
 public class ConceptController extends AbstractController {
 
     private final ConceptService conceptService;

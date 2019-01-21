@@ -8,15 +8,23 @@
         <version>1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-    <artifactId>gateway</artifactId>
+    <artifactId>auth-service</artifactId>
 
-    <name>gateway</name>
-    <description>Gateway for Ovcharka</description>
+    <name>auth-service</name>
+    <description>Auth service for Ovcharka</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+            <groupId>ovcharka</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ovcharka</groupId>
+            <artifactId>user-service</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -43,10 +51,9 @@
             <version>2.3.0</version>
         </dependency>
         <dependency>
-            <groupId>ovcharka</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 

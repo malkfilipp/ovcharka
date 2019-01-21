@@ -1,4 +1,4 @@
-package ovcharka.userservice.payload.request;
+package ovcharka.authservice.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateRequest {
-
-    private String name;
+public class LoginRequest {
     private String username;
     private String password;
-    private String role;
 }

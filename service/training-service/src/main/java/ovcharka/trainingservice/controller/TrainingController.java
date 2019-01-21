@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ovcharka.common.web.AbstractController;
-import ovcharka.common.web.AbstractResponse;
-import ovcharka.common.web.MessageResponse;
+import ovcharka.common.controller.AbstractController;
+import ovcharka.common.payload.AbstractResponse;
+import ovcharka.common.payload.MessageResponse;
 import ovcharka.trainingservice.payload.request.MessageRequest;
 import ovcharka.trainingservice.service.TrainingService;
 

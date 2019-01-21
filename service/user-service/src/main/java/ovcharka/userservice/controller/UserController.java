@@ -3,9 +3,10 @@ package ovcharka.userservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ovcharka.common.web.AbstractController;
-import ovcharka.common.web.AbstractResponse;
-import ovcharka.common.web.BooleanResponse;
+import ovcharka.common.controller.AbstractController;
+import ovcharka.common.payload.AbstractResponse;
+import ovcharka.common.payload.BooleanResponse;
+import ovcharka.userservice.domain.Role;
 import ovcharka.userservice.domain.User;
 import ovcharka.userservice.payload.request.UserStatsUpdateRequest;
 import ovcharka.userservice.payload.request.UserUpdateRequest;
@@ -13,7 +14,6 @@ import ovcharka.userservice.payload.response.UserResponse;
 import ovcharka.userservice.service.UserService;
 
 @RestController
-@RequestMapping("/users")
 public class UserController extends AbstractController {
 
     private final UserService userService;
@@ -39,7 +39,8 @@ public class UserController extends AbstractController {
                     userService.updateByUsername(
                             User.with(request.getName(),
                                       request.getUsername(),
-                                      request.getPassword())
+                                      request.getPassword(),
+                                      Role.valueOf(request.getRole()))
                     );
                     return new BooleanResponse(true);
                 }

@@ -1,4 +1,4 @@
-package ovcharka.common.web;
+package ovcharka.common.payload;
 
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.ToString;
 public class ErrorResponse extends AbstractResponse<Object> {
 
     public ErrorResponse(String message) {
-        super(AbstractResponse.ERROR, null, message);
+        super(ERROR, null, message);
     }
 }
