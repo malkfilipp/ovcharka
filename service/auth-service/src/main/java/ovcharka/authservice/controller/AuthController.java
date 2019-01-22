@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ovcharka.authservice.payload.SignUpRequest;
 import ovcharka.authservice.service.AuthService;
 import ovcharka.common.controller.AbstractController;
-import ovcharka.common.payload.AbstractResponse;
-import ovcharka.common.payload.BooleanResponse;
+import ovcharka.common.payload.response.AbstractResponse;
+import ovcharka.common.payload.response.BooleanResponse;
 import ovcharka.userservice.payload.request.UserUpdateRequest;
 
 @RestController
@@ -26,6 +26,7 @@ public class AuthController extends AbstractController {
         this.encoder = encoder;
     }
 
+    // TODO: 22/01/2019 error when username exists
     @PostMapping("/signup")
     ResponseEntity<AbstractResponse> signup(@RequestBody SignUpRequest request) {
         return getResponse(

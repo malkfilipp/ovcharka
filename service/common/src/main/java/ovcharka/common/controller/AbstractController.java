@@ -1,8 +1,8 @@
 package ovcharka.common.controller;
 
 import org.springframework.http.ResponseEntity;
-import ovcharka.common.payload.AbstractResponse;
-import ovcharka.common.payload.ErrorResponse;
+import ovcharka.common.payload.response.AbstractResponse;
+import ovcharka.common.payload.response.ErrorResponse;
 
 import java.util.function.Supplier;
 
@@ -16,7 +16,6 @@ public abstract class AbstractController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), INTERNAL_SERVER_ERROR);
         }
     }

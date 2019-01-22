@@ -3,7 +3,7 @@ package ovcharka.conceptservice.payload.response;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ovcharka.common.payload.AbstractResponse;
+import ovcharka.common.payload.response.AbstractResponse;
 import ovcharka.conceptservice.domain.Concept;
 
 @NoArgsConstructor

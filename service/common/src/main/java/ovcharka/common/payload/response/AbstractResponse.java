@@ -1,4 +1,4 @@
-package ovcharka.common.payload;
+package ovcharka.common.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

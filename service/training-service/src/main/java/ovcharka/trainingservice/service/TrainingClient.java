@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ovcharka.common.client.AbstractClient;
-import ovcharka.common.payload.BooleanResponse;
+import ovcharka.common.payload.response.BooleanResponse;
 import ovcharka.conceptservice.domain.Concept;
 import ovcharka.conceptservice.payload.response.ConceptResponse;
 import ovcharka.conceptservice.payload.response.WordListResponse;

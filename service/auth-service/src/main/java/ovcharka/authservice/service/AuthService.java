@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ovcharka.common.client.AbstractClient;
-import ovcharka.common.payload.BooleanResponse;
+import ovcharka.common.payload.response.BooleanResponse;
 import ovcharka.userservice.payload.request.UserUpdateRequest;
 import ovcharka.userservice.payload.response.UserResponse;
 

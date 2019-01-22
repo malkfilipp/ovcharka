@@ -40,7 +40,6 @@ public class UsernameAndPasswordAuthenticationFilter extends UsernamePasswordAut
             throws AuthenticationException {
 
         try {
-
             var credentials = new ObjectMapper().readValue(request.getInputStream(), LoginRequest.class);
             var authToken = new UsernamePasswordAuthenticationToken(
                     credentials.getUsername(), credentials.getPassword(), emptyList()

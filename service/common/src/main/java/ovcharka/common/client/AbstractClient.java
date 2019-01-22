@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-import ovcharka.common.payload.ErrorResponse;
-import ovcharka.common.payload.AbstractResponse;
+import ovcharka.common.payload.response.ErrorResponse;
+import ovcharka.common.payload.response.AbstractResponse;
 
 import java.io.IOException;
 import java.util.function.Supplier;
 
-import static ovcharka.common.payload.AbstractResponse.SUCCESS;
+import static ovcharka.common.payload.response.AbstractResponse.SUCCESS;
 
 @Service
 public abstract class AbstractClient {

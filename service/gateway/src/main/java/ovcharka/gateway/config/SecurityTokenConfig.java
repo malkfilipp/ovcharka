@@ -22,6 +22,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
         this.authConfig = authConfig;
     }
 
+    // TODO: 22/01/2019 move auth and admin prefixes to config or make endpoints /login and /signup
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()

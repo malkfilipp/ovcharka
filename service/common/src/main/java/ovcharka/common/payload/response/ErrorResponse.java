@@ -1,4 +1,4 @@
-package ovcharka.common.payload;
+package ovcharka.common.payload.response;
 
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -7,9 +7,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class BooleanResponse extends AbstractResponse<Boolean> {
+public class ErrorResponse extends AbstractResponse<Object> {
 
-    public BooleanResponse(boolean value) {
-        super(SUCCESS, value, null);
+    public ErrorResponse(String message) {
+        super(ERROR, null, message);
     }
 }

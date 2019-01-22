@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ovcharka.common.controller.AbstractController;
-import ovcharka.common.payload.AbstractResponse;
-import ovcharka.common.payload.MessageResponse;
-import ovcharka.trainingservice.payload.request.MessageRequest;
+import ovcharka.common.payload.response.AbstractResponse;
+import ovcharka.common.payload.response.MessageResponse;
+import ovcharka.trainingservice.payload.request.UserMessageRequest;
 import ovcharka.trainingservice.service.TrainingService;
 
 @RestController
@@ -22,7 +22,7 @@ public class TrainingController extends AbstractController {
     }
 
     @PostMapping
-    public ResponseEntity<AbstractResponse> sendMessage(@RequestBody MessageRequest messageRequest) {
+    public ResponseEntity<AbstractResponse> sendMessage(@RequestBody UserMessageRequest messageRequest) {
         return getResponse(
                 () -> new MessageResponse(
                         trainingService.processMessage(messageRequest.getUsername(),
