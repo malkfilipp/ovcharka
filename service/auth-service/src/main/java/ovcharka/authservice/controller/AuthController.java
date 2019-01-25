@@ -26,21 +26,19 @@ public class AuthController extends AbstractController {
         this.encoder = encoder;
     }
 
-    // TODO: 22/01/2019 error when username exists
     @PostMapping("/signup")
     ResponseEntity<AbstractResponse> signup(@RequestBody SignUpRequest request) {
         return getResponse(
-                () -> {
-                    authService.updateUser(
-                            new UserUpdateRequest(
-                                    request.getName(),
-                                    request.getUsername(),
-                                    encoder.encode(request.getPassword()),
-                                    "USER"
-                            )
-                    );
-                    return new BooleanResponse(true);
-                }
+                () -> new BooleanResponse(
+                        authService.create(
+                                new UserUpdateRequest(
+                                        request.getName(),
+                                        request.getUsername(),
+                                        encoder.encode(request.getPassword()),
+                                        "USER"
+                                )
+                        )
+                )
         );
     }
 }

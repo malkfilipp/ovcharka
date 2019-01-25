@@ -25,13 +25,13 @@ public class Initializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void init(ApplicationReadyEvent event) {
-        userDetailsService.updateUser(
+        userDetailsService.create(
                 new UserUpdateRequest("John", "john",
                                       encoder.encode("password1"),
                                       Role.ADMIN.toString())
         );
 
-        userDetailsService.updateUser(
+        userDetailsService.create(
                 new UserUpdateRequest("Mary", "mary",
                                       encoder.encode("password2"),
                                       Role.USER.toString())

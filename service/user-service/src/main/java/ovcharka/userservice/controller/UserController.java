@@ -32,7 +32,22 @@ public class UserController extends AbstractController {
         );
     }
 
-    @PostMapping
+    @PostMapping("/create")
+    ResponseEntity<AbstractResponse> create(@RequestBody UserUpdateRequest request) {
+        return getResponse(
+                () -> {
+                    userService.create(
+                            new User(request.getName(),
+                                     request.getUsername(),
+                                     request.getPassword(),
+                                     Role.valueOf(request.getRole()))
+                    );
+                    return new BooleanResponse(true);
+                }
+        );
+    }
+
+    @PostMapping("/update")
     ResponseEntity<AbstractResponse> updateUser(@RequestBody UserUpdateRequest request) {
         return getResponse(
                 () -> {

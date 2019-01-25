@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>service</artifactId>
+    <packaging>pom</packaging>
 
     <properties>
         <java.version>11</java.version>
@@ -18,12 +19,13 @@
 
     <modules>
         <module>common</module>
+        <module>api-gateway</module>
         <module>service-registry</module>
-        <module>gateway</module>
         <module>auth-service</module>
         <module>concept-service</module>
         <module>user-service</module>
         <module>training-service</module>
+        <module>web-gateway</module>
     </modules>
 
     <dependencies>

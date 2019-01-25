@@ -29,19 +29,22 @@ public class UserService {
         userRepository.deleteAll();
     }
 
+    public void create(User user) {
+        var found = userRepository.findByUsername(user.getUsername());
+
+        if (found.isPresent())
+            throw new IllegalArgumentException("This username is not available");
+
+        userRepository.save(user);
+    }
+
     public void updateByUsername(User user) {
         var found = userRepository.findByUsername(user.getUsername());
 
-        User saved;
-        if (found.isPresent()) {
-            saved = found.get();
-            saved.setName(user.getName());
-            saved.setPassword(user.getPassword());
-        } else {
-            saved = user;
-        }
+        if (!found.isPresent())
+            throw new IllegalArgumentException("No such user");
 
-        userRepository.save(saved);
+        userRepository.save(found.get());
     }
 
     public void updateUserStats(String username, String grade) {

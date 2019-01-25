@@ -42,14 +42,16 @@ public abstract class AbstractClient {
             return response.getData();
 
         } catch (HttpStatusCodeException e) {
-            var responseBody = e.getResponseBodyAsString();
-            throw getExceptionFrom(responseBody);
+            throw getExceptionFrom(e);
         }
     }
 
-    private RuntimeException getExceptionFrom(String response) {
+    private RuntimeException getExceptionFrom(HttpStatusCodeException exception) {
         try {
+            var response = exception.getResponseBodyAsString();
             var errorResponse = objectMapper.readValue(response, ErrorResponse.class);
+            if (exception.getStatusCode().is4xxClientError())
+                return new IllegalArgumentException(errorResponse.getMessage());
             return new IllegalStateException(errorResponse.getMessage());
         } catch (IOException e) {
             return new IllegalStateException("Can't read the error response from the server: " + e);

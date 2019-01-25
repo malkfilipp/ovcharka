@@ -32,9 +32,9 @@ public class AuthService extends AbstractClient implements UserDetailsService {
         return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
-    public void updateUser(UserUpdateRequest request) {
-        var url = "http://user-service";
-        postData(url, request, BooleanResponse.class);
+    public Boolean create(UserUpdateRequest request) {
+        var url = "http://user-service/create";
+        return postData(url, request, BooleanResponse.class);
     }
 }
 
