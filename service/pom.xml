@@ -26,6 +26,8 @@
         <module>user-service</module>
         <module>training-service</module>
         <module>web-gateway</module>
+        <module>token-service</module>
+        <module>telegram-client</module>
     </modules>
 
     <dependencies>

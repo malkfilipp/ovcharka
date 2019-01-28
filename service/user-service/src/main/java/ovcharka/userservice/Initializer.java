@@ -28,7 +28,7 @@ public class Initializer {
     @EventListener(ApplicationReadyEvent.class)
     public void init(ApplicationReadyEvent event) {
         userService.deleteAll();
-//        userService.updateByUsername(User.with("John", "john", "password1"));
-//        userService.updateByUsername(User.with("Mary", "mary", "password2"));
+//        userService.create(User.with("John", "john", "password1"));
+//        userService.create(User.with("Mary", "mary", "password2"));
     }
 }

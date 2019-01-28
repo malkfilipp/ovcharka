@@ -17,11 +17,6 @@
         <dependency>
             <groupId>ovcharka</groupId>
             <artifactId>common</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ovcharka</groupId>
-            <artifactId>common</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>
