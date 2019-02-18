@@ -1,4 +1,4 @@
-package ovcharka.gateway.config;
+package ovcharka.webgateway.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +22,6 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
         this.authConfig = authConfig;
     }
 
-    // TODO: 22/01/2019 move auth and admin prefixes to config or make endpoints /login and /signup
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -34,7 +33,6 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(POST, "/auth" + authConfig.getLoginUri()).permitAll()
             .antMatchers(POST, "/auth" + authConfig.getSignupUri()).permitAll()
-            .antMatchers(POST, "/token/generate").permitAll()
             .antMatchers("/admin/**/**").hasRole("ADMIN")
             .anyRequest().authenticated();
     }

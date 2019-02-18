@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,5 +23,5 @@ public class Concept {
     private String definition;
     @NonNull
     private Integer score;
-    private List<String> related;
+    private List<String> related = new ArrayList<>();
 }

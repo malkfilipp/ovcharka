@@ -11,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class ConceptsUpdateRequest {
 
-    private List<String> words;
+    private List<ConceptUpdateRequest> concepts;
 }

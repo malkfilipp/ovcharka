@@ -1,4 +1,4 @@
-package ovcharka.gateway.config;
+package ovcharka.webgateway.config;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

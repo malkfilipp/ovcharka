@@ -11,8 +11,8 @@ public class SentenceSimilarityCalculator implements SimilarityCalculator {
 
     @Override
     public boolean areSimilar(String first, String second) {
-//        return calcSimilarityScore(first, second) > 0.8;
-        return first.equals(second);
+        return calcSimilarityScore(first, second) > 0.8;
+//        return first.equals(second);
     }
 
     @Override

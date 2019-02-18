@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ovcharka.conceptservice.domain.Concept;
 import ovcharka.conceptservice.repository.ConceptRepository;
-import ovcharka.nlp.disambiguation.Classifier;
 import ovcharka.nlp.similarity.SimilarityCalculator;
 import ovcharka.nlp.similarity.WordSimilarityCalculator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -22,7 +20,6 @@ public class ConceptService {
 
     private final ConceptRepository conceptRepository;
 
-    private final Classifier classifier = new Classifier();
     private final SimilarityCalculator calculator = new WordSimilarityCalculator();
 
     @Autowired
@@ -60,21 +57,13 @@ public class ConceptService {
             throw new IllegalArgumentException("No such word");
     }
 
-    public void updateConcepts(List<String> words) {
+    public void updateConcepts(List<Concept> newConcepts) {
         conceptRepository.deleteAll();
-        var concepts = getConceptsFrom(words);
-        conceptRepository.saveAll(concepts);
+        updateRelated(newConcepts);
+        conceptRepository.saveAll(newConcepts);
     }
 
-    private List<Concept> getConceptsFrom(List<String> words) {
-        var concepts = words
-                .stream()
-                .map(word -> new Concept(null, word,
-                                         classifier.getDefinition(word),
-                                         classifier.getSignificance(word),
-                                         new ArrayList<>())
-                ).collect(toList());
-
+    private void updateRelated(List<Concept> concepts) {
         var map = new HashMap<String, Double>();
         concepts.forEach(
                 concept -> {
@@ -89,14 +78,13 @@ public class ConceptService {
                     map.entrySet()
                        .stream()
                        .sorted(comparingByValue(reverseOrder()))
-                       .limit(10)
+                       .limit(5)
                        .map(Entry::getKey)
                        .forEach(word -> concept.getRelated().add(word));
 
                     map.clear();
                 }
         );
-        return concepts;
     }
 
     public void updateConcept(Concept concept) {
@@ -109,9 +97,9 @@ public class ConceptService {
             updated.setScore(concept.getScore());
             conceptRepository.save(updated);
         } else {
-            var words = findAllWords();
-            words.add(concept.getWord());
-            updateConcepts(words);
+            var concepts = findAll();
+            concepts.add(concept);
+            updateConcepts(concepts);
         }
     }
 }

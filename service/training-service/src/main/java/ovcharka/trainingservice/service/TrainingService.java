@@ -149,11 +149,16 @@ public class TrainingService {
         var conceptScore = concept.getScore();
         var debt = training.getDebt();
 
+        System.out.println("TrainingService.reevaluate");
+        System.out.println("word = " + concept.getWord());
+
         if (calculator.areSimilar(answer, concept.getDefinition())) {
+            System.out.println("similar");
             training.setScore(training.getScore() + conceptScore);
             if (debt > 0)
                 training.setDebt(max(debt - conceptScore, 0));
         } else {
+            System.out.println("not similar");
             training.setDebt(debt + conceptScore);
         }
         training.setMax(training.getMax() + conceptScore);

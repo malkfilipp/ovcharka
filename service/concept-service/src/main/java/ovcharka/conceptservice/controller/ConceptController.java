@@ -14,6 +14,11 @@ import ovcharka.conceptservice.payload.response.ConceptResponse;
 import ovcharka.conceptservice.payload.response.WordListResponse;
 import ovcharka.conceptservice.service.ConceptService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+
 @RestController
 public class ConceptController extends AbstractController {
 
@@ -64,7 +69,15 @@ public class ConceptController extends AbstractController {
     ResponseEntity<AbstractResponse> updateWords(@RequestBody ConceptsUpdateRequest request) {
         return getResponse(
                 () -> {
-                    conceptService.updateConcepts(request.getWords());
+                    var concepts = request
+                            .getConcepts()
+                            .stream()
+                            .map(concept -> Concept.of(concept.getWord(),
+                                                       concept.getDefinition(),
+                                                       concept.getScore()))
+                            .collect(toList());
+
+                    conceptService.updateConcepts(concepts);
                     return new BooleanResponse(true);
                 }
         );
